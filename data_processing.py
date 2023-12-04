@@ -147,36 +147,73 @@ with open(os.path.join(__location__, "Teams.csv")) as f:
         teams.append(dict(r))
 
 
-table_player = Table("players", players)
-table_team = Table("teams", teams)
+# table_player = Table("players", players)
+# table_team = Table("teams", teams)
+# my_DB = DB()
+# my_DB.insert(table_player)
+# my_DB.insert(table_team)
+# my_player = my_DB.search("players")
+# my_team = my_DB.search("teams")
+
+# print("Filter Player Task 1.1")
+# my_player_filtered = my_player.filter(lambda x: "ia" in x["team"])
+# my_player_filtered.filter(lambda x: int(x["minutes"]) < 200 and int(x["passes"]) > 100)
+# for i in my_player_filtered.table:
+#     print("{} {} {}".format(i["surname"], i["team"], i["position"]))
+
+# print("Filter Player Task 1.2")
+# my_team_filtered_rank_below_10 = my_team.filter(lambda x: int(x["ranking"]) < 10)
+# my_team_filtered_rank_above_10 = my_team.filter(lambda x: int(x["ranking"]) >= 10)
+# team_below_ten = [int(x["games"]) for x in my_team_filtered_rank_below_10.table]
+# team_above_ten = [int(x["games"]) for x in my_team_filtered_rank_above_10.table]
+# print("The Average of game below 10", sum(team_below_ten) / len(team_below_ten))
+# print("The Average of game above 10", sum(team_above_ten) / len(team_above_ten))
+
+# print("Filter Player Task 1.3")
+# my_player_filtered_midfielder = my_player.filter(
+#     lambda x: x["position"] == "midfielder"
+# )
+# my_player_filtered_forward = my_player.filter(lambda x: x["position"] == "forward")
+
+# midfielders = [int(x["passes"]) for x in my_player_filtered_midfielder.table]
+# forwards = [int(x["passes"]) for x in my_player_filtered_forward.table]
+
+# print("The Average of Midfielder", sum(midfielders) / len(midfielders))
+# print("The Average of Forward", sum(forwards) / len(forwards))
+
+titanics = []
+with open(os.path.join(__location__, "Titanic.csv")) as f:
+    rows = csv.DictReader(f)
+    for r in rows:
+        titanics.append(dict(r))
+
+table_titanic = Table("titanics", titanics)
 my_DB = DB()
-my_DB.insert(table_player)
-my_DB.insert(table_team)
-my_player = my_DB.search("players")
-my_team = my_DB.search("teams")
+my_DB.insert(table_titanic)
+my_titanic = my_DB.search("titanics")
 
-print("Filter Player Task 1.1")
-my_player_filtered = my_player.filter(lambda x: "ia" in x["team"])
-my_player_filtered.filter(lambda x: int(x["minutes"]) < 200 and int(x["passes"]) > 100)
-for i in my_player_filtered.table:
-    print("{} {} {}".format(i["surname"], i["team"], i["position"]))
-
-print("Filter Player Task 1.2")
-my_team_filtered_rank_below_10 = my_team.filter(lambda x: int(x["ranking"]) < 10)
-my_team_filtered_rank_above_10 = my_team.filter(lambda x: int(x["ranking"]) >= 10)
-team_below_ten = [int(x["games"]) for x in my_team_filtered_rank_below_10.table]
-team_above_ten = [int(x["games"]) for x in my_team_filtered_rank_above_10.table]
-print("The Average of game below 10", sum(team_below_ten) / len(team_below_ten))
-print("The Average of game above 10", sum(team_above_ten) / len(team_above_ten))
-
-print("Filter Player Task 1.3")
-my_player_filtered_midfielder = my_player.filter(
-    lambda x: x["position"] == "midfielder"
+print("Filter Titanic Task 1.4")
+my_titanic_filtered_first_class = my_titanic.filter(lambda x: int(x["class"]) == 1)
+my_titanic_filtered_third_class = my_titanic.filter(lambda x: int(x["class"]) == 3)
+first_class_list = [float(i["fare"]) for i in my_titanic_filtered_first_class.table]
+third_class_list = [float(i["fare"]) for i in my_titanic_filtered_third_class.table]
+print(
+    "The Average of Fare of first class", sum(first_class_list) / len(first_class_list)
 )
-my_player_filtered_forward = my_player.filter(lambda x: x["position"] == "forward")
+print(
+    "The Average of Fare of third class", sum(third_class_list) / len(third_class_list)
+)
 
-midfielders = [int(x["passes"]) for x in my_player_filtered_midfielder.table]
-forwards = [int(x["passes"]) for x in my_player_filtered_forward.table]
-
-print("The Average of Midfielder", sum(midfielders) / len(midfielders))
-print("The Average of Forward", sum(forwards) / len(forwards))
+print("Filter Titanic Task 1.5")
+my_titanic_filtered_m_survived = my_titanic.filter(
+    lambda x: x["gender"] == "M" and x["survived"] == "yes"
+)
+my_titanic_filtered_f_survived = my_titanic.filter(
+    lambda x: x["gender"] == "F" and x["survived"] == "yes"
+)
+print(
+    f"The survived rate male {(len(my_titanic_filtered_m_survived.table) * 100) / len(my_titanic.table)} %"
+)
+print(
+    f"The survived rate female {(len(my_titanic_filtered_f_survived.table) * 100) / len(my_titanic.table)} %"
+)
